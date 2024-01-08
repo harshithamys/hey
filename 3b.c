@@ -1,58 +1,57 @@
 #include <stdio.h>
+#include <ctype.h>
+#include <math.h>
 
-char stack[20];
+float s[25];
 int top = -1;
 
-void push(char x) {
-    stack[++top] = x;
+float operation(char op, float op1, float op2) {
+    switch (op) {
+        case '+':
+            return (op1 + op2);
+        case '-':
+            return (op1 - op2);
+        case '*':
+            return (op1 * op2);
+        case '/':
+            return (op1 / op2);
+        case '^':
+            return pow(op1, op2);
+        case '%':
+            return ((int)op1 % (int)op2);
+        default:
+            return (0);
+    }
 }
 
-char pop() {
-    if (top == -1)
-        return -1;
-    else
-        return stack[top--];
+void push(float symbol) {
+    s[++top] = symbol;
 }
 
-int priority(char x) {
-    if (x == '(')
-        return 0;
-    if (x == '+' || x == '-')
-        return 1;
-    if (x == '*' || x == '/')
-        return 2;
-    if (x == '^')
-        return 3;
+float pop() {
+    return (s[top--]);
 }
 
-int main() {
-    char exp[20];
-    char *e, x;
-    
-    printf("Enter the expression: ");
-    scanf("%s", exp);
-    
-    e = exp;
-    
-    while (*e != '\0') {
-        if (isalnum(*e))
-            printf("%c", *e);
-        else if (*e == '(')
-            push(*e);
-        else if (*e == ')') {
-            while ((x = pop()) != '(')
-                printf("%c", x);
-        } else {
-            while (priority(stack[top]) >= priority(*e))
-                printf("%c", pop());
-            push(*e);
+void main() {
+    char postfix[25], symbol;
+    float op1, op2, res;
+
+    int i;
+    printf("Enter the Postfix Expression\n");
+    scanf("%s", postfix);
+
+    for (i = 0; postfix[i] != '\0'; i++) {
+        symbol = postfix[i];
+        if (isdigit(symbol))
+            push(symbol - '0');
+        else {
+            op2 = pop();
+            op1 = pop();
+            res = operation(symbol, op1, op2);
+            push(res);
         }
-        e++;
-    }
-    
-    while (top != -1) {
-        printf("%c", pop());
     }
 
-    return 0;
+    res = pop();
+    printf("Result=%.2f ", res);
 }
