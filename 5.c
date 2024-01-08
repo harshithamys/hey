@@ -10,26 +10,22 @@ struct Node* next;
 
 void push(struct Node** head_ref, int new_data);
 
-/* A utility function to check if
-given data is present in a list */
+
 bool isPresent(struct Node* head, int data);
 
-/* Function to get union of two
-linked lists head1 and head2 */
+
 struct Node* getUnion(struct Node* head1,struct Node* head2)
 {
 struct Node* result = NULL;
 struct Node *t1 = head1, *t2 = head2;
 
-// Insert all elements of
-// list1 to the result list
+
 while (t1 != NULL) {
 push(&amp;result, t1-&gt;data);
 t1 = t1-&gt;next;
 }
 
-// Insert those elements of list2
-// which are not present in result list
+
 while (t2 != NULL) {
 if (!isPresent(result, t2-&gt;data))
 push(&amp;result, t2-&gt;data);
@@ -39,15 +35,12 @@ t2 = t2-&gt;next;
 return result;
 }
 
-/* Function to get intersection of
-two linked lists head1 and head2 */
+
 struct Node* getIntersection(struct Node* head1,struct Node* head2)
 {
 struct Node* result = NULL;
 struct Node* t1 = head1;
-// Traverse list1 and search each element of it in
-// list2. If the element is present in list 2, then
-// insert the element to result
+
 while (t1 != NULL) {
 if (isPresent(head2, t1-&gt;data))
 push(&amp;result, t1-&gt;data);
